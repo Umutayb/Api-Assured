@@ -120,7 +120,7 @@ public class StringUtilities {   //Utility methods
                 else throw new Exception( "Second value of this pair was found to be null");
 
             }catch (Exception gamma){
-                log.new error(GRAY+gamma+RESET);
+                log.new Error(GRAY+gamma+RESET);
 
             }
 

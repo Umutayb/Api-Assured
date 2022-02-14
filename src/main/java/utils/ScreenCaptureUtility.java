@@ -16,14 +16,14 @@ public class ScreenCaptureUtility {
 
     public File captureScreen(String specName, RemoteWebDriver driver) {
         try {
-            log.new info("Capturing page");
+            log.new Info("Capturing page");
 
             String name = specName+"#"+numeric.randomNumber(1,10000)+".jpg";
             File sourceFile = new File("Screenshots");
             File fileDestination  = ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(fileDestination, new File(sourceFile, name));
 
-            log.new info("Screenshot saved as; "+name+" at the \"Screenshots\" file.");
+            log.new Info("Screenshot saved as; "+name+" at the \"Screenshots\" file.");
             return fileDestination;
         }
         catch (Exception gamma){

@@ -13,8 +13,8 @@ The dependency can be acquired by adding Jitpack repository into the pom.xml, as
     <!-- Framework -->
         <dependency>
             <groupId>com.github.Umutayb</groupId>
-            <artifactId>Pickleib</artifactId>
-            <version>0.5.1</version>
+            <artifactId>Api-Assured</artifactId>
+            <version>0.0.1</version>
         </dependency>   
 </dependencies>
         
