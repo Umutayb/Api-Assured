@@ -1,15 +1,12 @@
 package utils;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
+import org.junit.Assert;
+import resources.Database;
 import static resources.Colors.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.junit.Assert;
-import resources.Database;
 
 public class ApiCall {
 
