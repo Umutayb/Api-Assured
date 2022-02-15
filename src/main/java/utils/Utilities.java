@@ -19,7 +19,7 @@ public abstract class Utilities {
     public NumericUtilities numeric = new NumericUtilities();
     public TerminalUtilities terminal = new TerminalUtilities();
 
-    public Utilities(String url, String uri){
+    public Utilities(){
         try {properties.load(new FileReader("src/test/resources/test.properties"));}
         catch (IOException e) {e.printStackTrace();}
     }
