@@ -10,7 +10,7 @@
   <packaging>jar</packaging>
 
   <name>Api Assured</name>
-  <url>http://github.com/Umutayb/Pickleib</url>
+  <url>http://github.com/Umutayb/Api-Assured</url>
 
   <properties>
     <buildDirectory>${project.basedir}/out/artifacts/Api-Assured_jar</buildDirectory>
