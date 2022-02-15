@@ -15,7 +15,6 @@ public abstract class Utilities {
     public EmailUtilities email = new EmailUtilities();
     public FileUtilities fileUtils = new FileUtilities();
     public JsonUtilities jsonUtilities = new JsonUtilities();
-    public XPathUtilities xpathUtils = new XPathUtilities();
     public StringUtilities strUtils = new StringUtilities();
     public NumericUtilities numeric = new NumericUtilities();
     public TerminalUtilities terminal = new TerminalUtilities();
@@ -30,7 +29,7 @@ public abstract class Utilities {
         if (seconds > 1)
             log.new Info("Waiting for "+BLUE+seconds+GRAY+" seconds");
         try {
-            Thread.sleep((long) (seconds* 1000L));
+            Thread.sleep((long) (seconds* 1000));
         }
         catch (InterruptedException exception){
             Assert.fail(GRAY+exception.getLocalizedMessage()+RESET);
