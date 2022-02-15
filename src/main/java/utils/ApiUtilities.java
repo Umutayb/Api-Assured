@@ -6,9 +6,9 @@ import java.util.Properties;
 import static resources.Colors.*;
 import org.junit.Assert;
 
-public abstract class Utilities {
+public abstract class ApiUtilities {
 
-    Printer log = new Printer(Utilities.class);
+    Printer log = new Printer(ApiUtilities.class);
 
     public TextParser parser = new TextParser();
     public Properties properties = new Properties();
@@ -19,7 +19,7 @@ public abstract class Utilities {
     public NumericUtilities numeric = new NumericUtilities();
     public TerminalUtilities terminal = new TerminalUtilities();
 
-    public Utilities(){
+    public ApiUtilities(){
         try {properties.load(new FileReader("src/test/resources/test.properties"));}
         catch (IOException e) {e.printStackTrace();}
     }
