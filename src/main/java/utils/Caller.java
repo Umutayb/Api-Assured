@@ -14,7 +14,10 @@ public class Caller {
             Response<T> response = call.execute();
 
             if (response.isSuccessful()){
-                log.new Important(response.message());
+                if (response.message().length()>0)
+                    log.new Info(response.message());
+                if (response.body()!=null)
+                    log.new Important(response.body());
                 log.new Success("The response code is: " + response.code());
                 return response.body();
             }
