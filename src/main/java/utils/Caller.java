@@ -1,7 +1,7 @@
 package utils;
 
-import exceptions.FailedCallException;
 import retrofit2.Call;
+import org.junit.Assert;
 import retrofit2.Response;
 import java.io.IOException;
 
@@ -9,7 +9,7 @@ public class Caller {
 
     static Printer log = new Printer(Caller.class);
 
-    protected static <T> T perform(Call<T> call, Boolean strict, String serviceName) throws FailedCallException {
+    protected static <T> T perform(Call<T> call, Boolean strict, String serviceName) {
         log.new Info("Performing an api call to " + call.request().url());
         try {
             Response<T> response = call.execute();
@@ -25,13 +25,13 @@ public class Caller {
                     log.new Warning(response.message());
                 log.new Warning("The response code is: " + response.code());
                 if (strict)
-                    throw new FailedCallException("The strict call performed for " + serviceName + " service returned response code " + response.code());
-                return null;
+                    Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
             }
         }
         catch (IOException e) {
             log.new Error(e.getStackTrace());
-            throw new FailedCallException("The call performed for " + serviceName + " failed for an unknown reason.");
+            Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
         }
+        return null;
     }
 }
