@@ -21,7 +21,8 @@ public class Caller {
                 return response.body();
             }
             else{
-                log.new Warning(response.message());
+                if (response.message().length()>0)
+                    log.new Warning(response.message());
                 log.new Warning("The response code is: " + response.code());
                 if (strict)
                     throw new FailedCallException("The strict call performed for " + serviceName + " service returned response code " + response.code());
