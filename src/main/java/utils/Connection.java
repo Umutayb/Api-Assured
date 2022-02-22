@@ -24,10 +24,10 @@ public class Connection {
 
     public class Get{
         Response response;
-        public Get(Object input, Boolean inputRequired){
+        public Get(Object input){
             requestUrl = "https://"+url+uri;
 
-            log.new Info("Performing "+BLUE+"GET"+GRAY+" request at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
+            log.new Info("Performing "+BLUE+"GET"+GRAY+" call at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
 
             response = RestAssured.get(requestUrl);
 
@@ -45,10 +45,10 @@ public class Connection {
 
     public class Delete{
         Response response;
-        public Delete(Object input, Boolean inputRequired){
+        public Delete(Object input){
             requestUrl = "https://"+url+uri;
 
-            log.new Info("Performing "+BLUE+"DELETE"+GRAY+" request at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
+            log.new Info("Performing "+BLUE+"DELETE"+GRAY+" call at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
 
             request = RestAssured.given().header("Accept","application/json");
 
@@ -64,10 +64,10 @@ public class Connection {
 
     public class Post{
         Response response;
-        public Post(Object input, Boolean inputRequired){
+        public Post(Object input){
             requestUrl = "https://"+url+uri;
 
-            log.new Info("Performing "+BLUE+"POST"+GRAY+" request at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
+            log.new Info("Performing "+BLUE+"POST"+GRAY+" call at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
 
             request = RestAssured.given().header("Content-Type","application/json").header("Accept","application/json");
 
@@ -86,10 +86,10 @@ public class Connection {
 
     public class Put{
         Response response;
-        public Put(Object input, Boolean inputRequired){
+        public Put(Object input){
             requestUrl = "https://"+url+uri;
 
-            log.new Info("Performing "+BLUE+"PUT"+GRAY+" request at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
+            log.new Info("Performing "+BLUE+"PUT"+GRAY+" call at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
 
             request = RestAssured.given().header("Content-Type","application/json").header("Accept","application/json");
 
@@ -110,13 +110,13 @@ public class Connection {
     public class Upload{
         Response response;
         public Upload(String url, String uri, Object file, String fileUrl){
-            Response response = null;
+            Response response;
 
             RequestSpecification request;
 
             String requestUrl = "https://"+url+uri;
 
-            log.new Info("Performing "+BLUE+"post"+GRAY+" request at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
+            log.new Info("Performing "+BLUE+"post"+GRAY+" call at: \""+BLUE+requestUrl+GRAY+"\""+RESET);
 
             request = RestAssured.given().multiPart("file", new File(fileUrl), "image/jpeg");
 
