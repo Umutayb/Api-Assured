@@ -16,8 +16,6 @@ public class Caller {
             if (response.isSuccessful()){
                 if (response.message().length()>0)
                     log.new Info(response.message());
-                if (response.body()!=null)
-                    log.new Important(response.body());
                 log.new Success("The response code is: " + response.code());
                 return response.body();
             }
