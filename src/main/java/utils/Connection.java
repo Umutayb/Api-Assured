@@ -1,24 +1,23 @@
 package utils;
 
 import java.io.File;
-import org.junit.Assert;
 import resources.Database;
 import static resources.Colors.*;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 
-public class ApiUtilities {
+public class Connection {
 
     public JsonUtilities jsonUtilities = new JsonUtilities();
-    Printer log = new Printer(ApiUtilities.class);
+    Printer log = new Printer(Connection.class);
     RequestSpecification request;
     Response response;
     String requestUrl;
     String url;
     String uri;
 
-    public ApiUtilities(String url, String uri){
+    public Connection(String url, String uri){
         this.url = url;
         this.uri = uri;
     }
@@ -74,8 +73,6 @@ public class ApiUtilities {
 
             if (input!=null && input!="")
                 request.body(input);
-            else if(inputRequired)
-                Assert.fail(YELLOW+"The input cannot be null"+RESET);
 
             response = request.post(requestUrl);
 
@@ -98,8 +95,6 @@ public class ApiUtilities {
 
             if (input!=null && input!="")
                 request.body(input);
-            else if(inputRequired)
-                Assert.fail(YELLOW+"The input cannot be null"+RESET);
 
             response = request.put(requestUrl);
 
@@ -127,8 +122,6 @@ public class ApiUtilities {
 
             if (file!=null && file!="")
                 request.body(file);
-            else
-                Assert.fail(YELLOW+"The input cannot be null"+RESET);
 
             response = request.post(requestUrl);
 
