@@ -2,7 +2,7 @@
 
 ### How To Get Started:
 
-First, the library should be exported into an empty automation project. There are two ways of doing this.
+First, the library should be exported into an empty automation project. There are two ways of doing this. (See the template for this library [@umutayb/Api-Assured](https://github.com/Umutayb/Api-Automation-Sample))
 ### First Way:
 
 [![](https://jitpack.io/v/umutayb/api-assured.svg)](https://jitpack.io/#umutayb/api-assured)
