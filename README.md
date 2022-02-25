@@ -4,7 +4,7 @@
 
 First, the library should be exported into an empty automation project. There are two ways of doing this. 
 
-(See the template for this library [@umutayb/Api-Automation-Sample](https://github.com/Umutayb/Api-Automation-Sample))
+(See the template for this library @[umutayb/Api-Automation-Sample](https://github.com/Umutayb/Api-Automation-Sample))
 
 ### First Way:
 
