@@ -52,6 +52,8 @@ public class Caller {
                 log.new Warning("The response code is: " + response.code());
                 if (strict)
                     Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
+
+                return response;
             }
         }
         catch (IOException e) {
