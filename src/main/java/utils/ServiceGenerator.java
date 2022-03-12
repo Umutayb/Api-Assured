@@ -47,6 +47,7 @@ public class ServiceGenerator {
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
+                                .method(request.method(), request.body())
                                 .build();
                     }
                     else {
