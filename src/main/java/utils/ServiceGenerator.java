@@ -8,6 +8,11 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.converter.protobuf.ProtoConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+import retrofit2.converter.wire.WireConverterFactory;
 import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +47,11 @@ public class ServiceGenerator {
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addConverterFactory(MoshiConverterFactory.create())
+                .addConverterFactory(WireConverterFactory.create())
+                .addConverterFactory(ProtoConverterFactory.create())
                 .build();
 
         return retrofit.create(serviceClass);
