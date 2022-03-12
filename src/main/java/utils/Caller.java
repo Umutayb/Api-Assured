@@ -49,9 +49,9 @@ public class Caller {
             else{
                 if (response.message().length()>0)
                     log.new Warning(response.message());
-                if (response.errorBody() != null && response.errorBody().string().length()>0)
-                    log.new Error(response.errorBody().string());
                 log.new Warning("The response code is: " + response.code());
+                if (response.errorBody() != null && response.errorBody().string().length()>0)
+                    log.new Info(response.raw());
                 if (strict)
                     Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
 
