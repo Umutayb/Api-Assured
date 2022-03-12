@@ -50,6 +50,7 @@ public class ServiceGenerator {
                                 .header("Host", request.url().host())
                                 .header("Content-Length", contentLength)
                                 .build();
+                        System.out.println(request.url().host());
                     }
                     else {
                         request = request.newBuilder()
