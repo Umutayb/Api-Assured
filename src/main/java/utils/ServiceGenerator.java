@@ -43,12 +43,12 @@ public class ServiceGenerator {
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
 
-                    String host = Objects.requireNonNull(request.header("Host"));
+                    String host = request.url().host();
                     String contentLength = String.valueOf(Objects.requireNonNull(request.body()).contentLength());
 
                     request = request.newBuilder()
-                            .addHeader("Host", host)
-                            .addHeader("Content-Length", contentLength)
+                            .header("Host", host)
+                            .header("Content-Length", contentLength)
                             .build();
 
                     return chain.proceed(request);
