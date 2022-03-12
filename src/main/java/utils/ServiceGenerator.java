@@ -1,6 +1,7 @@
 
 package utils;
 
+import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -14,6 +15,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 import retrofit2.converter.wire.WireConverterFactory;
 import java.lang.reflect.Field;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class ServiceGenerator {
@@ -29,14 +31,26 @@ public class ServiceGenerator {
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+        HttpLoggingInterceptor headerInterceptor = new HttpLoggingInterceptor();
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
+                .addInterceptor(headerInterceptor)
                 .connectTimeout(1, TimeUnit.MINUTES)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
+
+                    String host = Objects.requireNonNull(request.header("Host"));
+                    String contentLength = String.valueOf(Objects.requireNonNull(request.body()).contentLength());
+
+                    request = request.newBuilder()
+                            .addHeader("Host", host)
+                            .addHeader("Content-Length", contentLength)
+                            .build();
+
                     return chain.proceed(request);
                 }).build();
 
