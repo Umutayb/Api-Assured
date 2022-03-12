@@ -42,19 +42,21 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
-                    String host = request.url().host();
                     String contentLength;
                     if (request.body() != null){
+                        System.out.println("NOT NULL");
                         contentLength = String.valueOf(Objects.requireNonNull(request.body()).contentLength());
                         request = request.newBuilder()
-                                .header("Host", host)
-                                .header("Host", host)
+                                .header("Host", request.url().host())
                                 .header("Content-Length", contentLength)
                                 .build();
                     }
-                    else request = request.newBuilder()
-                                .header("Host", host)
+                    else {
+                        request = request.newBuilder()
+                                .header("Host", request.url().host())
                                 .build();
+                        System.out.println("NULL");
+                    }
 
                     return chain.proceed(request);
                 }).build();
