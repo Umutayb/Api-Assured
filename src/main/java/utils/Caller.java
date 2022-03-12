@@ -9,7 +9,7 @@ public class Caller {
 
     static Printer log = new Printer(Caller.class);
 
-    protected static <T> T perform(Call<T> call, Boolean strict, String serviceName) {
+    protected static <T> T perform(Call<T> call, Boolean strict, Boolean body, String serviceName) {
         log.new Info("Performing an api call to " + call.request().url());
         try {
             Response<T> response = call.execute();
@@ -18,7 +18,10 @@ public class Caller {
                 if (response.message().length()>0)
                     log.new Info(response.message());
                 log.new Success("The response code is: " + response.code());
-                return response.body();
+                if (body)
+                    return (T) response;
+                else
+                    return response.body();
             }
             else{
                 if (response.message().length()>0)
