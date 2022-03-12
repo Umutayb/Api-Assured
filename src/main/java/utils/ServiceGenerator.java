@@ -43,19 +43,16 @@ public class ServiceGenerator {
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
                     if (request.body() != null){
-                        System.out.println("NOT NULL");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .addHeader("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .build();
-                        System.out.println(request.url().host());
                     }
                     else {
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .build();
-                        System.out.println("NULL");
                     }
 
                     return chain.proceed(request);
