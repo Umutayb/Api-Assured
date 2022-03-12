@@ -1,7 +1,6 @@
 
 package utils;
 
-import okhttp3.Headers;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -61,7 +60,6 @@ public class ServiceGenerator {
 
         assert BASE_URL != null;
         Retrofit retrofit = new Retrofit.Builder()
-                .client(client)
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
@@ -71,6 +69,7 @@ public class ServiceGenerator {
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addConverterFactory(WireConverterFactory.create())
                 .addConverterFactory(ProtoConverterFactory.create())
+                .client(client)
                 .build();
 
         return retrofit.create(serviceClass);
