@@ -13,15 +13,17 @@ public class Caller {
     static Printer log = new Printer(Caller.class);
     static ObjectMapper objectMapper = new ObjectMapper();
 
-    public Caller(){objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);}
+    public Caller(){}
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
         log.new Info("Performing an api call to " + call.request().url());
         try {
             Response<T> response = call.execute();
 
-            if (printBody)
+            if (printBody){
+                objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
                 log.new Info(objectMapper.valueToTree(response.body()).toPrettyString());
+            }
 
             if (response.isSuccessful()){
                 if (response.message().length()>0)
@@ -50,8 +52,10 @@ public class Caller {
         try {
             Response<T> response = call.execute();
 
-            if (printBody)
+            if (printBody){
+                objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
                 log.new Info(objectMapper.valueToTree(response.body()).toPrettyString());
+            }
 
             if (response.isSuccessful()){
                 if (response.message().length()>0)
