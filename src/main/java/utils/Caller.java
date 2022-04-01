@@ -33,6 +33,7 @@ public class Caller {
                     log.new Warning(response.message());
                 log.new Warning("The response code is: " + response.code());
                 log.new Warning(response.raw());
+
                 if (strict)
                     Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
             }
@@ -63,6 +64,7 @@ public class Caller {
                     log.new Warning(response.message());
                 log.new Warning("The response code is: " + response.code());
                 log.new Warning(response.raw());
+
                 if (strict)
                     Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
 
