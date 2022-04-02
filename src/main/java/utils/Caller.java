@@ -3,6 +3,7 @@ package utils;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import retrofit2.Call;
 import org.junit.Assert;
 import retrofit2.Response;
@@ -13,7 +14,10 @@ public class Caller {
     static Printer log = new Printer(Caller.class);
     static ObjectMapper objectMapper = new ObjectMapper();
 
-    public Caller(){objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);}
+    public Caller(){
+        objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    }
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
         log.new Info("Performing an api call to " + call.request().url());
