@@ -64,8 +64,8 @@ public class ServiceGenerator {
                     else if (headers != null) {
                         System.out.println("3");
                         request = request.newBuilder()
-                                .header("Host", request.url().host())
                                 .headers(headers)
+                                .header("Host", request.url().host())
                                 .build();
                     }
                     else {
