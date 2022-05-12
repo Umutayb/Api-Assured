@@ -20,16 +20,16 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ServiceGenerator {
 
-    static Headers headers;
+    Headers headers;
     /**
      * Creates Retrofit Service.
      *
      * @param serviceClass Which service class (api data store) going to be used when creating Retrofit Service.
      * @return Created Retrofit Service.
      */
-    public static <S> S generateService(Class<S> serviceClass) {
+    public <S> S generateService(Class<S> serviceClass) {
 
-        String BASE_URL = (String) getFieldValue("BASE_URL", serviceClass);
+        String BASE_URL = (String) new ObjectUtilities().getFieldValue("BASE_URL", serviceClass);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -93,15 +93,5 @@ public class ServiceGenerator {
         return retrofit.create(serviceClass);
     }
 
-    public static <T> Object getFieldValue(String fieldName, Class<T> tClass) {
-        try {
-            Field field = tClass.getDeclaredField(fieldName);
-            field.setAccessible(true);
-            return field.get(tClass);
-        }
-        catch (Exception e) {e.printStackTrace();}
-        return null;
-    }
-
-    public static void setHeaders(Headers headers){ServiceGenerator.headers = headers;}
+    public void setHeaders(Headers headers){this.headers = headers;}
 }
