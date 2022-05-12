@@ -6,7 +6,6 @@ import okhttp3.Request;
 import java.util.Objects;
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;
-import java.lang.reflect.Field;
 import java.util.concurrent.TimeUnit;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -21,13 +20,18 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class ServiceGenerator {
 
     Headers headers;
+
+    public ServiceGenerator(Headers headers) {this.headers = headers;}
+
+    public ServiceGenerator(){}
+
     /**
      * Creates Retrofit Service.
      *
      * @param serviceClass Which service class (api data store) going to be used when creating Retrofit Service.
      * @return Created Retrofit Service.
      */
-    public <S> S generateService(Class<S> serviceClass) {
+    public <S> S generate(Class<S> serviceClass) {
 
         String BASE_URL = (String) new ObjectUtilities().getFieldValue("BASE_URL", serviceClass);
 
