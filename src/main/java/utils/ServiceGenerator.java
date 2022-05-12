@@ -1,21 +1,22 @@
 
 package utils;
 
-import okhttp3.OkHttpClient;
+import okhttp3.Headers;
 import okhttp3.Request;
-import okhttp3.logging.HttpLoggingInterceptor;
+import java.util.Objects;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import okhttp3.OkHttpClient;
+import java.lang.reflect.Field;
+import java.util.concurrent.TimeUnit;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.jackson.JacksonConverterFactory;
+import retrofit2.converter.wire.WireConverterFactory;
 import retrofit2.converter.moshi.MoshiConverterFactory;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.protobuf.ProtoConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
-import retrofit2.converter.wire.WireConverterFactory;
-import java.lang.reflect.Field;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class ServiceGenerator {
     /**
@@ -24,7 +25,7 @@ public class ServiceGenerator {
      * @param serviceClass Which service class (api data store) going to be used when creating Retrofit Service.
      * @return Created Retrofit Service.
      */
-    public static <S> S generateService(Class<S> serviceClass) {
+    public static <S> S generateService(Class<S> serviceClass, Headers headers) {
 
         String BASE_URL = (String) getFieldValue("BASE_URL", serviceClass);
 
@@ -41,12 +42,27 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
-                    if (request.body() != null){
+                    if (request.body() != null && headers != null) {
+                        request = request.newBuilder()
+                                .header("Host", request.url().host())
+                                .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
+                                .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
+                                .headers(headers)
+                                .method(request.method(), request.body())
+                                .build();
+                    }
+                    else if (request.body() != null) {
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .method(request.method(), request.body())
+                                .build();
+                    }
+                    else if (headers != null) {
+                        request = request.newBuilder()
+                                .header("Host", request.url().host())
+                                .headers(headers)
                                 .build();
                     }
                     else {
@@ -74,15 +90,14 @@ public class ServiceGenerator {
 
         return retrofit.create(serviceClass);
     }
+
     public static <T> Object getFieldValue(String fieldName, Class<T> tClass) {
         try {
             Field field = tClass.getDeclaredField(fieldName);
             field.setAccessible(true);
             return field.get(tClass);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-
+        catch (Exception e) {e.printStackTrace();}
         return null;
     }
 }
