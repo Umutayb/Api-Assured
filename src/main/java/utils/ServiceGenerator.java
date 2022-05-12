@@ -19,13 +19,15 @@ import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ServiceGenerator {
+
+    static Headers headers;
     /**
      * Creates Retrofit Service.
      *
      * @param serviceClass Which service class (api data store) going to be used when creating Retrofit Service.
      * @return Created Retrofit Service.
      */
-    public static <S> S generateService(Class<S> serviceClass, Headers headers) {
+    public static <S> S generateService(Class<S> serviceClass) {
 
         String BASE_URL = (String) getFieldValue("BASE_URL", serviceClass);
 
@@ -43,7 +45,6 @@ public class ServiceGenerator {
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
                     if (request.body() != null && headers != null) {
-                        System.out.println("1");
                         request = request.newBuilder()
                                 .headers(headers)
                                 .header("Host", request.url().host())
@@ -53,7 +54,6 @@ public class ServiceGenerator {
                                 .build();
                     }
                     else if (request.body() != null) {
-                        System.out.println("2");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
@@ -62,14 +62,12 @@ public class ServiceGenerator {
                                 .build();
                     }
                     else if (headers != null) {
-                        System.out.println("3");
                         request = request.newBuilder()
                                 .headers(headers)
                                 .header("Host", request.url().host())
                                 .build();
                     }
                     else {
-                        System.out.println("4");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .build();
@@ -104,4 +102,6 @@ public class ServiceGenerator {
         catch (Exception e) {e.printStackTrace();}
         return null;
     }
+
+    public void setHeaders(Headers headers){ServiceGenerator.headers = headers;}
 }
