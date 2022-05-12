@@ -43,6 +43,7 @@ public class ServiceGenerator {
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
                     if (request.body() != null && headers != null) {
+                        System.out.println("1");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
@@ -52,6 +53,7 @@ public class ServiceGenerator {
                                 .build();
                     }
                     else if (request.body() != null) {
+                        System.out.println("2");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
@@ -60,12 +62,14 @@ public class ServiceGenerator {
                                 .build();
                     }
                     else if (headers != null) {
+                        System.out.println("3");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .headers(headers)
                                 .build();
                     }
                     else {
+                        System.out.println("4");
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .build();
