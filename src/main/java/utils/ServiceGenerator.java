@@ -103,5 +103,5 @@ public class ServiceGenerator {
         return null;
     }
 
-    public void setHeaders(Headers headers){ServiceGenerator.headers = headers;}
+    public static void setHeaders(Headers headers){ServiceGenerator.headers = headers;}
 }
