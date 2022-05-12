@@ -45,10 +45,10 @@ public class ServiceGenerator {
                     if (request.body() != null && headers != null) {
                         System.out.println("1");
                         request = request.newBuilder()
+                                .headers(headers)
                                 .header("Host", request.url().host())
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
-                                .headers(headers)
                                 .method(request.method(), request.body())
                                 .build();
                     }
