@@ -24,7 +24,7 @@ public class Caller {
         try {
             Response<T> response = call.execute();
 
-            if (printBody && response.body() != null)
+            if (printBody)
                 log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
 
             if (response.isSuccessful()){
