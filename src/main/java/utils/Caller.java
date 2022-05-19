@@ -1,18 +1,18 @@
 package utils;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import retrofit2.Call;
-import org.junit.Assert;
-import retrofit2.Response;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import retrofit2.Response;
+import org.junit.Assert;
+import retrofit2.Call;
 
 public class Caller {
 
-    static Printer log = new Printer(Caller.class);
     static ObjectMapper objectMapper = new ObjectMapper();
+    static Printer log = new Printer(Caller.class);
 
     public Caller(){
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
@@ -24,8 +24,7 @@ public class Caller {
         try {
             Response<T> response = call.execute();
 
-            if (printBody)
-                log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
+            if (printBody) printBody(response);
 
             if (response.isSuccessful()){
                 if (response.message().length()>0)
@@ -55,8 +54,7 @@ public class Caller {
         try {
             Response<T> response = call.execute();
 
-            if (printBody && response.body() != null)
-                log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
+            if (printBody) printBody(response);
 
             if (response.isSuccessful()){
                 if (response.message().length()>0)
@@ -71,7 +69,6 @@ public class Caller {
 
                 if (strict)
                     Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
-
             }
             return response;
         }
@@ -81,5 +78,14 @@ public class Caller {
             Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
         }
         return null;
+    }
+
+    static <T> void printBody(Response<T> response){
+        if (response.body() != null)
+            log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
+        else if (response.errorBody() != null)
+            log.new Warning("The response body is: " + "\n" + objectMapper.valueToTree(response.errorBody()).toPrettyString());
+        else
+            log.new Warning("The response body is empty.");
     }
 }
