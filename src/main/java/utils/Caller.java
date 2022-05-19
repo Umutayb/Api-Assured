@@ -81,14 +81,19 @@ public class Caller {
     }
 
     static <T> void printBody(Response<T> response){
+        JsonUtilities convert = new JsonUtilities();
+        String message = "The response body is: \n";
         try {
             if (response.body() != null)
-                log.new Info("The response body is: \n" + objectMapper.valueToTree(response.body()).toPrettyString());
+                log.new Info(message +
+                        objectMapper.valueToTree(response.body()).toPrettyString()
+                );
             else if (response.errorBody() != null)
-                log.new Warning(
-                        "The response body is: \n" + objectMapper.valueToTree(new JsonUtilities().str2json(response.errorBody().string())).toPrettyString());
+                log.new Warning(message +
+                        objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
+                );
             else
-                log.new Warning("The response body is empty.");
+                log.new Info("The response body is empty.");
         } catch (IOException e) {throw new RuntimeException(e);}
     }
 }
