@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-
-import io.restassured.path.json.mapper.factory.GsonObjectMapperFactory;
 import retrofit2.Response;
 import org.junit.Assert;
 import retrofit2.Call;
@@ -19,7 +17,6 @@ public class Caller {
     public Caller(){
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
@@ -86,9 +83,10 @@ public class Caller {
     static <T> void printBody(Response<T> response){
         try {
             if (response.body() != null)
-                log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
+                log.new Info("The response body is: \n" + objectMapper.valueToTree(response.body()).toPrettyString());
             else if (response.errorBody() != null)
-                log.new Warning("The response body is: " + "\n" + objectMapper.valueToTree(new JsonUtilities().str2json(response.errorBody().string())));
+                log.new Warning(
+                        "The response body is: \n" + objectMapper.valueToTree(new JsonUtilities().str2json(response.errorBody().string())).toPrettyString());
             else
                 log.new Warning("The response body is empty.");
         } catch (IOException e) {throw new RuntimeException(e);}
