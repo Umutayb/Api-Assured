@@ -19,6 +19,7 @@ public class Caller {
     public Caller(){
         objectMapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
@@ -87,7 +88,7 @@ public class Caller {
             if (response.body() != null)
                 log.new Info("The response body is: " + "\n" + objectMapper.valueToTree(response.body()).toPrettyString());
             else if (response.errorBody() != null)
-                log.new Warning("The response body is: " + "\n" + objectMapper.valueToTree(response.errorBody().string()).toPrettyString());
+                log.new Warning("The response body is: " + "\n" + objectMapper.writeValueAsString(response.errorBody()));
             else
                 log.new Warning("The response body is empty.");
         } catch (IOException e) {throw new RuntimeException(e);}
