@@ -91,6 +91,8 @@ public class Caller {
             else if (response.errorBody() != null){
                 String errorMessage = response.errorBody().string();
                 System.out.println(errorMessage);
+                System.out.println(errorMessage);
+                System.out.println(errorMessage);
                 JSONObject responseJSON = convert.str2json(errorMessage);
                 if (responseJSON!=null)
                     log.new Warning(message +
