@@ -80,7 +80,7 @@ public class Caller {
         return null;
     }
 
-    static <T> void printBody(Response<T> response){
+    static <T> void printBody(Response<T> response) throws IOException {
         JsonUtilities convert = new JsonUtilities();
         String message = "The response body is: \n";
         try {
@@ -95,7 +95,9 @@ public class Caller {
             else
                 log.new Info("The response body is empty.");
         }
-        catch (ClassCastException | IOException castException){
-            if (response.errorBody() != null) log.new Warning(message + response.errorBody());}
+        catch (ClassCastException castException){
+            try {if (response.errorBody() != null) log.new Warning(message + response.errorBody().string());}
+            catch (IOException e){log.new Warning(e.getStackTrace());}
+        }
     }
 }
