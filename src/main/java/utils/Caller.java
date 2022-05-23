@@ -89,6 +89,16 @@ public class Caller {
             if (response.body() != null)
                 log.new Info(message + objectMapper.valueToTree(response.body()).toPrettyString());
             else if (response.errorBody() != null){
+                System.out.println("1a "+response.errorBody().string());
+                System.out.println("1b "+response.errorBody());
+                System.out.println("1c "+response.errorBody().source());
+                System.out.println("1d "+response.errorBody().charStream());
+                System.out.println("1f "+response.errorBody().byteStream());
+                System.out.println("1 "+response.errorBody().string());
+                System.out.println("2 "+response.errorBody());
+                System.out.println("3 "+response.errorBody().charStream());
+                System.out.println("4 "+response.errorBody().source());
+                System.out.println("5 "+response.errorBody().string());
                 JSONObject responseJSON = convert.str2json(response.errorBody().string());
                 if (responseJSON!=null)
                     log.new Warning(message +
