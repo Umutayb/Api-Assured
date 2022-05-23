@@ -94,6 +94,8 @@ public class Caller {
                 );
             else
                 log.new Info("The response body is empty.");
-        } catch (IOException e) {throw new RuntimeException(e);}
+        }
+        catch (ClassCastException | IOException castException){
+            if (response.errorBody() != null) log.new Warning(message + response.errorBody());}
     }
 }
