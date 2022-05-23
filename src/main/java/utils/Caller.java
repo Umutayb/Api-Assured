@@ -88,19 +88,13 @@ public class Caller {
                 log.new Info(message +
                         objectMapper.valueToTree(response.body()).toPrettyString()
                 );
-            else if (response.errorBody() != null)
-                if (response.errorBody().string() != null)
-                    log.new Warning(message +
-                            objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
-                    );
-                else log.new Warning(message + response.errorBody().toString());
-
+            else if (response.errorBody() != null && response.errorBody().string() != null)
+                log.new Warning(message +
+                        objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
+                );
             else
                 log.new Info("The response body is empty.");
         }
-        catch (ClassCastException castException){
-            try {if (response.errorBody() != null) log.new Warning(message + response.errorBody().string());}
-            catch (IOException e){log.new Warning(e.getStackTrace());}
-        }
+        catch (IOException exception){log.new Warning(exception.getStackTrace());}
     }
 }
