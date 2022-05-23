@@ -89,9 +89,12 @@ public class Caller {
                         objectMapper.valueToTree(response.body()).toPrettyString()
                 );
             else if (response.errorBody() != null)
-                log.new Warning(message +
-                        objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
-                );
+                if (response.errorBody().string() != null)
+                    log.new Warning(message +
+                            objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
+                    );
+                else log.new Warning(message + response.errorBody().toString());
+
             else
                 log.new Info("The response body is empty.");
         }
