@@ -96,7 +96,7 @@ public class Caller {
                 JSONObject responseJSON = convert.str2json(errorMessage);
                 if (responseJSON!=null)
                     log.new Warning(message +
-                            objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
+                            objectMapper.valueToTree(responseJSON).toPrettyString()
                     );
                 else log.new Warning(message + errorMessage);
 
