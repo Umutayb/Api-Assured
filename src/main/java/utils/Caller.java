@@ -86,23 +86,18 @@ public class Caller {
         JsonUtilities convert = new JsonUtilities();
         String message = "The response body is: \n";
         try {
-            if (response.body() != null)
+            if (response.body() != null) // Success response with a non-null body
                 log.new Info(message + objectMapper.valueToTree(response.body()).toPrettyString());
-            else if (response.errorBody() != null){
+
+            else if (response.errorBody() != null){ // Error response with a non-null body
                 String errorMessage = response.errorBody().string();
-                System.out.println(errorMessage);
-                System.out.println(errorMessage);
-                System.out.println(errorMessage);
                 JSONObject responseJSON = convert.str2json(errorMessage);
                 if (responseJSON!=null)
-                    log.new Warning(message +
-                            objectMapper.valueToTree(responseJSON).toPrettyString()
-                    );
-                else log.new Warning(message + errorMessage);
-
+                    log.new Warning(message + objectMapper.valueToTree(responseJSON).toPrettyString());
+                else // Success response with a non-null & non-json body
+                    log.new Warning(message + errorMessage);
             }
-            else
-                log.new Info("The response body is empty.");
+            else log.new Info("The response body is empty."); // Success response with a null body
         }
         catch (IOException exception){log.new Warning(exception.getStackTrace());}
     }
