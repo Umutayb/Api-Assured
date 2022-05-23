@@ -94,8 +94,15 @@ public class Caller {
                     log.new Warning(message +
                             objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
                     );
-                else 
+                else{
+                    System.out.println("1 "+response.errorBody().string());
+                    System.out.println("2 "+response.errorBody());
+                    System.out.println("3 "+response.errorBody().charStream());
+                    System.out.println("4 "+response.errorBody().source());
+                    System.out.println("5 "+response.errorBody().string());
                     log.new Warning(message + response.errorBody().string());
+
+                }
             }
             else
                 log.new Info("The response body is empty.");
