@@ -95,6 +95,11 @@ public class Caller {
                             objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
                     );
                 else{
+                    System.out.println("1a "+response.errorBody().string());
+                    System.out.println("1b "+response.errorBody());
+                    System.out.println("1c "+response.errorBody().source());
+                    System.out.println("1d "+response.errorBody().charStream());
+                    System.out.println("1f "+response.errorBody().byteStream());
                     System.out.println("1 "+response.errorBody().string());
                     System.out.println("2 "+response.errorBody());
                     System.out.println("3 "+response.errorBody().charStream());
