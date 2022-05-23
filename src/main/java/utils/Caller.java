@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+
+import org.json.simple.JSONObject;
 import retrofit2.Response;
 import org.junit.Assert;
 import retrofit2.Call;
@@ -85,21 +87,16 @@ public class Caller {
         String message = "The response body is: \n";
         try {
             if (response.body() != null)
-                log.new Info(message +
-                        objectMapper.valueToTree(response.body()).toPrettyString()
-                );
+                log.new Info(message + objectMapper.valueToTree(response.body()).toPrettyString());
             else if (response.errorBody() != null){
-                System.out.println(response.errorBody().string());
-                System.out.println(response.errorBody());
-                System.out.println(response.errorBody().source());
-                System.out.println(response.errorBody().charStream());
-                System.out.println(response.errorBody().byteStream());
-
-                log.new Warning(message +
-                        objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
-                );
+                JSONObject responseJSON = convert.str2json(response.errorBody().string());
+                if (responseJSON!=null)
+                    log.new Warning(message +
+                            objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
+                    );
+                else 
+                    log.new Warning(message + response.errorBody().string());
             }
-
             else
                 log.new Info("The response body is empty.");
         }
