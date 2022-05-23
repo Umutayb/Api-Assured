@@ -88,10 +88,18 @@ public class Caller {
                 log.new Info(message +
                         objectMapper.valueToTree(response.body()).toPrettyString()
                 );
-            else if (response.errorBody() != null && response.errorBody().string() != null)
+            else if (response.errorBody() != null){
+                System.out.println(response.errorBody().string());
+                System.out.println(response.errorBody());
+                System.out.println(response.errorBody().source());
+                System.out.println(response.errorBody().charStream());
+                System.out.println(response.errorBody().byteStream());
+
                 log.new Warning(message +
                         objectMapper.valueToTree(convert.str2json(response.errorBody().string())).toPrettyString()
                 );
+            }
+
             else
                 log.new Info("The response body is empty.");
         }
