@@ -21,7 +21,7 @@ public class ServiceGenerator {
 
     Headers headers;
 
-    public ServiceGenerator(Headers headers) {this.headers = headers;}
+    public ServiceGenerator(Headers headers) {setHeaders(headers);}
 
     public ServiceGenerator(){}
 
