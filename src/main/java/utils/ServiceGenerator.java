@@ -66,8 +66,7 @@ public class ServiceGenerator {
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .build();
                     }
-                    log.new Info("Headers: \n" + request.headers());
-                    System.out.println("Header count: " + request.headers().size());
+                    log.new Info("Headers(" + request.headers().size() + "): \n" + request.headers());
                     return chain.proceed(request);
                 }).build();
 
