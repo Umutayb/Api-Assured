@@ -50,7 +50,7 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
-                    if (request.body() != null && headers != null){
+                    if (headers != null){
                         for (String header: headers.names()) {
                             request = request.newBuilder()
                                     .addHeader(header, Objects.requireNonNull(headers.get(header)))
@@ -58,7 +58,6 @@ public class ServiceGenerator {
                         }
                         System.out.println("(1st)Headers are: " + request.headers());
                         request = request.newBuilder()
-                                .header("Host", request.url().host())
                                 .method(request.method(), request.body())
                                 .build();
                         System.out.println("(2nd)Headers are: " + request.headers());
@@ -71,6 +70,7 @@ public class ServiceGenerator {
                                 .build();
                         System.out.println("(3rd)Headers are: " + request.headers());
                     }
+                    request = request.newBuilder().header("Host", request.url().host()).method(request.method(), request.body()).build();
                     System.out.println("(4th)Headers are: " + request.headers());
                     return chain.proceed(request);
                 }).build();
