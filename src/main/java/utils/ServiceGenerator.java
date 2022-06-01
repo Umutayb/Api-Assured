@@ -49,25 +49,25 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
-                    request = request.newBuilder().header("Host", request.url().host()).build();
+                    request = request.newBuilder()
+                            .header("Host", request.url().host())
+                            .method(request.method(), request.body())
+                            .build();
                     if (headers != null){
                         for (String header: headers.names()) {
                             request = request.newBuilder()
                                     .addHeader(header, Objects.requireNonNull(headers.get(header)))
                                     .build();
                         }
-                        request = request.newBuilder()
-                                .method(request.method(), request.body())
-                                .build();
                     }
                     if (request.body() != null) {
                         request = request.newBuilder()
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
-                                .method(request.method(), request.body())
                                 .build();
                     }
                     log.new Info("Headers: \n" + request.headers());
+                    System.out.println("Header count: " + request.headers().size());
                     return chain.proceed(request);
                 }).build();
 
