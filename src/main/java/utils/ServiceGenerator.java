@@ -56,10 +56,12 @@ public class ServiceGenerator {
                                     .addHeader(header, Objects.requireNonNull(headers.get(header)))
                                     .build();
                         }
+                        System.out.println("Headers are: " + request.headers());
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .method(request.method(), request.body())
                                 .build();
+                        System.out.println("Headers are: " + request.headers());
                     }
                     if (request.body() != null) {
                         request = request.newBuilder()
@@ -68,6 +70,7 @@ public class ServiceGenerator {
                                 .method(request.method(), request.body())
                                 .build();
                     }
+                    System.out.println("Headers are: " + request.headers());
                     return chain.proceed(request);
                 }).build();
 
