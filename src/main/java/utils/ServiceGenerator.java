@@ -56,12 +56,12 @@ public class ServiceGenerator {
                                     .addHeader(header, Objects.requireNonNull(headers.get(header)))
                                     .build();
                         }
-                        System.out.println("Headers are: " + request.headers());
+                        System.out.println("(1st)Headers are: " + request.headers());
                         request = request.newBuilder()
                                 .header("Host", request.url().host())
                                 .method(request.method(), request.body())
                                 .build();
-                        System.out.println("Headers are: " + request.headers());
+                        System.out.println("(2nd)Headers are: " + request.headers());
                     }
                     if (request.body() != null) {
                         request = request.newBuilder()
@@ -69,8 +69,9 @@ public class ServiceGenerator {
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .method(request.method(), request.body())
                                 .build();
+                        System.out.println("(3rd)Headers are: " + request.headers());
                     }
-                    System.out.println("Headers are: " + request.headers());
+                    System.out.println("(4th)Headers are: " + request.headers());
                     return chain.proceed(request);
                 }).build();
 
