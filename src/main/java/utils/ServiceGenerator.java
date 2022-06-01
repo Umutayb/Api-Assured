@@ -4,8 +4,6 @@ package utils;
 import okhttp3.Headers;
 import okhttp3.Request;
 import java.util.Objects;
-
-import okhttp3.internal.http2.Header;
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +20,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 public class ServiceGenerator {
 
     Headers headers;
+    private final Printer log = new Printer(ServiceGenerator.class);
 
     public ServiceGenerator(Headers headers) {setHeaders(headers);}
 
@@ -50,17 +49,16 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
+                    request = request.newBuilder().header("Host", request.url().host()).build();
                     if (headers != null){
                         for (String header: headers.names()) {
                             request = request.newBuilder()
                                     .addHeader(header, Objects.requireNonNull(headers.get(header)))
                                     .build();
                         }
-                        System.out.println("(1st)Headers are: " + request.headers());
                         request = request.newBuilder()
                                 .method(request.method(), request.body())
                                 .build();
-                        System.out.println("(2nd)Headers are: " + request.headers());
                     }
                     if (request.body() != null) {
                         request = request.newBuilder()
@@ -68,10 +66,8 @@ public class ServiceGenerator {
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .method(request.method(), request.body())
                                 .build();
-                        System.out.println("(3rd)Headers are: " + request.headers());
                     }
-                    request = request.newBuilder().header("Host", request.url().host()).method(request.method(), request.body()).build();
-                    System.out.println("(4th)Headers are: " + request.headers());
+                    log.new Info("Headers: \n" + request.headers());
                     return chain.proceed(request);
                 }).build();
 
@@ -88,7 +84,6 @@ public class ServiceGenerator {
                 .addConverterFactory(ProtoConverterFactory.create())
                 .client(client)
                 .build();
-
         return retrofit.create(serviceClass);
     }
 
