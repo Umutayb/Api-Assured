@@ -19,7 +19,7 @@ import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
 
 public class ServiceGenerator {
 
-    Headers headers;
+    Headers headers = new Headers.Builder().build();
     private final Printer log = new Printer(ServiceGenerator.class);
 
     public ServiceGenerator(Headers headers) {setHeaders(headers);}
@@ -53,13 +53,11 @@ public class ServiceGenerator {
                             .header("Host", request.url().host())
                             .method(request.method(), request.body())
                             .build();
-                    if (headers != null){
-                        for (String header: headers.names()) {
-                            if (!request.headers().names().contains(header)){
-                                request = request.newBuilder()
-                                        .addHeader(header, Objects.requireNonNull(headers.get(header)))
-                                        .build();
-                            }
+                    for (String header: headers.names()) {
+                        if (!request.headers().names().contains(header)){
+                            request = request.newBuilder()
+                                    .addHeader(header, Objects.requireNonNull(headers.get(header)))
+                                    .build();
                         }
                     }
                     if (request.body() != null) {
