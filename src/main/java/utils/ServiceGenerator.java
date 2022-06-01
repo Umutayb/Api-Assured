@@ -4,6 +4,8 @@ package utils;
 import okhttp3.Headers;
 import okhttp3.Request;
 import java.util.Objects;
+
+import okhttp3.internal.http2.Header;
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;
 import java.util.concurrent.TimeUnit;
@@ -48,35 +50,24 @@ public class ServiceGenerator {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .addNetworkInterceptor(chain -> {
                     Request request = chain.request().newBuilder().build();
-                    if (request.body() != null && headers != null) {
+                    if (request.body() != null && headers != null){
+                        for (String header: headers.names()) {
+                            request = request.newBuilder()
+                                    .addHeader(header, Objects.requireNonNull(headers.get(header)))
+                                    .build();
+                        }
                         request = request.newBuilder()
-                                .headers(headers)
                                 .header("Host", request.url().host())
+                                .method(request.method(), request.body())
+                                .build();
+                    }
+                    if (request.body() != null) {
+                        request = request.newBuilder()
                                 .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .method(request.method(), request.body())
                                 .build();
                     }
-                    else if (request.body() != null) {
-                        request = request.newBuilder()
-                                .header("Host", request.url().host())
-                                .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
-                                .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
-                                .method(request.method(), request.body())
-                                .build();
-                    }
-                    else if (headers != null) {
-                        request = request.newBuilder()
-                                .headers(headers)
-                                .header("Host", request.url().host())
-                                .build();
-                    }
-                    else {
-                        request = request.newBuilder()
-                                .header("Host", request.url().host())
-                                .build();
-                    }
-
                     return chain.proceed(request);
                 }).build();
 
