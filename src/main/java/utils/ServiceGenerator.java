@@ -66,7 +66,7 @@ public class ServiceGenerator {
                                 .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                 .build();
                     }
-                    log.new Info("Headers(" + request.headers().size() + "): \n" + request.headers());
+                    log.new Info("Headers(" + request.headers().size() + "): \n\n" + request.headers());
                     return chain.proceed(request);
                 }).build();
 
