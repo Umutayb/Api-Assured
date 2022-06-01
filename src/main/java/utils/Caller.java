@@ -11,7 +11,7 @@ import retrofit2.Response;
 import org.junit.Assert;
 import retrofit2.Call;
 
-public class Caller {
+public abstract class Caller {
 
     static ObjectMapper objectMapper = new ObjectMapper();
     static Printer log = new Printer(Caller.class);
