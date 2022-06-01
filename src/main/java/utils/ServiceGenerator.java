@@ -55,9 +55,11 @@ public class ServiceGenerator {
                             .build();
                     if (headers != null){
                         for (String header: headers.names()) {
-                            request = request.newBuilder()
-                                    .addHeader(header, Objects.requireNonNull(headers.get(header)))
-                                    .build();
+                            if (!request.headers().names().contains(header)){
+                                request = request.newBuilder()
+                                        .addHeader(header, Objects.requireNonNull(headers.get(header)))
+                                        .build();
+                            }
                         }
                     }
                     if (request.body() != null) {
