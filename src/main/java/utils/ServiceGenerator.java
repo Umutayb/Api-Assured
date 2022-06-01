@@ -53,13 +53,11 @@ public class ServiceGenerator {
                             .header("Host", request.url().host())
                             .method(request.method(), request.body())
                             .build();
-                    if (headers != null){
-                        for (String header: headers.names()) {
-                            if (!request.headers().names().contains(header)){
-                                request = request.newBuilder()
-                                        .addHeader(header, Objects.requireNonNull(headers.get(header)))
-                                        .build();
-                            }
+                    for (String header: headers.names()) {
+                        if (!request.headers().names().contains(header)){
+                            request = request.newBuilder()
+                                    .addHeader(header, Objects.requireNonNull(headers.get(header)))
+                                    .build();
                         }
                     }
                     if (request.body() != null) {
