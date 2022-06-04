@@ -29,7 +29,7 @@
     <dependency>
       <groupId>com.github.umutayb</groupId>
       <artifactId>java-utilities</artifactId>
-      <version>0.0.9</version>
+      <version>3b859e8a1c</version>
     </dependency>
 
     <!-- Commons -->
