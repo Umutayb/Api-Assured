@@ -1,4 +1,3 @@
-
 package utils;
 
 import okhttp3.Headers;
@@ -16,6 +15,8 @@ import retrofit2.converter.protobuf.ProtoConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 import retrofit2.converter.jackson.JacksonConverterFactory;
 import retrofit2.converter.simplexml.SimpleXmlConverterFactory;
+
+import static utils.FileUtilities.properties;
 
 public class ServiceGenerator {
 
@@ -37,9 +38,12 @@ public class ServiceGenerator {
         String BASE_URL = (String) new ObjectUtilities().getFieldValue("BASE_URL", serviceClass);
 
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         HttpLoggingInterceptor headerInterceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+
+        if (Boolean.parseBoolean(properties.getProperty("detailed-logging"))){
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            interceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
+        }
 
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
