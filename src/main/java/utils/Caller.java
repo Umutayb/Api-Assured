@@ -22,7 +22,7 @@ public abstract class Caller {
     }
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
-        log.new Info("Performing " + call.request().method() + " call to " + call.request().url());
+        log.new Info("Performing " + call.request().method() + " call to " + call.request().url() + ", calling the '" + serviceName + "'  service.");
         try {
             Response<T> response = call.execute();
 
@@ -53,7 +53,7 @@ public abstract class Caller {
     }
 
     protected static <T> Response<T> getResponse(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
-        log.new Info("Performing " + call.request().method() + " call to " + call.request().url());
+        log.new Info("Performing " + call.request().method() + " call to " + call.request().url() + ", calling the '" + serviceName + "'  service.");
         try {
             Response<T> response = call.execute();
 
