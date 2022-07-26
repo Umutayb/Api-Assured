@@ -6,7 +6,7 @@
 
   <groupId>com.github.Umutayb</groupId>
   <artifactId>Api-Assured</artifactId>
-  <version>0.6.9</version>
+  <version>0.7.1</version>
   <packaging>jar</packaging>
 
   <name>Api Assured</name>
