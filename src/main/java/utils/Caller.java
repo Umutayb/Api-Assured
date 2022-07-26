@@ -1,15 +1,14 @@
 package utils;
 
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
-
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.json.simple.JSONObject;
-import retrofit2.Response;
 import org.junit.Assert;
 import retrofit2.Call;
+import retrofit2.Response;
+import java.io.IOException;
 
 public abstract class Caller {
 
@@ -22,7 +21,7 @@ public abstract class Caller {
     }
 
     protected static <T> T perform(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
-        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service to url: " + call.request().url());
+        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
         try {
             Response<T> response = call.execute();
 
@@ -44,16 +43,15 @@ public abstract class Caller {
             }
             return response.body();
         }
-        catch (IOException e) {
-            log.new Error(e.getLocalizedMessage());
-            log.new Error(e.getStackTrace());
+        catch (IOException exception) {
+            log.new Error(exception.getLocalizedMessage(),exception);
             Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
         }
         return null;
     }
 
     protected static <T> Response<T> getResponse(Call<T> call, Boolean strict, Boolean printBody, String serviceName) {
-        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service to url: " + call.request().url());
+        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
         try {
             Response<T> response = call.execute();
 
@@ -75,10 +73,9 @@ public abstract class Caller {
             }
             return response;
         }
-        catch (IOException e) {
+        catch (IOException exception) {
             if (strict){
-                log.new Error(e.getLocalizedMessage());
-                log.new Error(e.getStackTrace());
+                log.new Error(exception.getLocalizedMessage(), exception);
                 Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
             }
         }
