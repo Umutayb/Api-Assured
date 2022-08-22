@@ -21,7 +21,7 @@
     <maven.compiler.target>11</maven.compiler.target>
     <selenium.version>4.4.0</selenium.version>
     <retrofit.version>2.9.0</retrofit.version>
-    <okhttp.version>4.10.0</okhttp.version>
+    <okhttp.version>4.9.3</okhttp.version>
   </properties>
 
   <dependencies>
