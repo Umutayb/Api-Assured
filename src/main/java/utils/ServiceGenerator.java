@@ -65,10 +65,11 @@ public class ServiceGenerator {
                         }
                     }
                     if (request.body() != null) {
-                        request = request.newBuilder()
-                                .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
-                                .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
-                                .build();
+                        if (Objects.requireNonNull(request.body()).contentLength()!=0)
+                            request = request.newBuilder()
+                                    .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
+                                    .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
+                                    .build();
                     }
                     log.new Info(("Headers(" + request.headers().size() + "): \n" + request.headers()).trim());
                     return chain.proceed(request);
