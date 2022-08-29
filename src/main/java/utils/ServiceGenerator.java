@@ -65,7 +65,7 @@ public class ServiceGenerator {
                         }
                     }
                     if (request.body() != null) {
-                        if (Objects.requireNonNull(request.body()).contentLength()!=0)
+                        if (Objects.requireNonNull(request.body()).contentLength()!=0 && Objects.requireNonNull(request.body()).contentType() != null)
                             request = request.newBuilder()
                                     .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
                                     .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
