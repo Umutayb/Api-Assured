@@ -6,7 +6,7 @@
 
   <groupId>com.github.Umutayb</groupId>
   <artifactId>Api-Assured</artifactId>
-  <version>0.7.5</version>
+  <version>0.7.6</version>
   <packaging>jar</packaging>
 
   <name>Api Assured</name>
@@ -17,6 +17,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.surefire.version>2.22.1</maven.surefire.version>
     <maven.compiler.version>3.8.0</maven.compiler.version>
+    <java.utilities.version>0.3.7</java.utilities.version>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
     <selenium.version>4.4.0</selenium.version>
@@ -29,7 +30,7 @@
     <dependency>
       <groupId>com.github.umutayb</groupId>
       <artifactId>java-utilities</artifactId>
-      <version>0.3.6</version>
+      <version>${java.utilities.version}</version>
     </dependency>
 
     <!-- OKHttp -->
