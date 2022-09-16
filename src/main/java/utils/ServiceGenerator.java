@@ -2,6 +2,8 @@ package utils;
 
 import okhttp3.Headers;
 import okhttp3.Request;
+
+import java.util.Arrays;
 import java.util.Objects;
 import retrofit2.Retrofit;
 import okhttp3.OkHttpClient;
@@ -65,11 +67,22 @@ public class ServiceGenerator {
                         }
                     }
                     if (request.body() != null) {
-                        if (Objects.requireNonNull(request.body()).contentLength()!=0 && Objects.requireNonNull(request.body()).contentType() != null)
+                        Boolean contentLength = Objects.requireNonNull(request.body()).contentLength()!=0;
+                        Boolean contentType = Objects.requireNonNull(request.body()).contentType() != null;
+
+                        if (contentLength && contentType)
                             request = request.newBuilder()
-                                    .header("Content-Length", String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
-                                    .header("Content-Type", String.valueOf(Objects.requireNonNull(request.body()).contentType()))
+                                    .header(
+                                            "Content-Length",
+                                            String.valueOf(Objects.requireNonNull(request.body()).contentLength()))
+                                    .header(
+                                            "Content-Type",
+                                            String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                     .build();
+
+                        Arrays.stream(Objects.requireNonNull(request.body()).getClass().getDeclaredFields())
+                                .iterator()
+                                .forEachRemaining((field -> field.setAccessible(true)));
                     }
                     log.new Info(("Headers(" + request.headers().size() + "): \n" + request.headers()).trim());
                     return chain.proceed(request);
