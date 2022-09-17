@@ -31,8 +31,7 @@ public abstract class Caller {
             if (printBody) printBody(response);
 
             if (response.isSuccessful()){
-                if (response.message().length()>0)
-                    log.new Info(response.message());
+                if (response.message().length()>0) log.new Info(response.message());
                 log.new Success("The response code is: " + response.code());
             }
             else{
