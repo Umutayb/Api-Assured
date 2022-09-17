@@ -79,23 +79,20 @@ public class ServiceGenerator {
                                             "Content-Type",
                                             String.valueOf(Objects.requireNonNull(request.body()).contentType()))
                                     .build();
-
-                        Arrays.stream(Objects.requireNonNull(request.body()).getClass().getDeclaredFields())
-                                .iterator()
-                                .forEachRemaining((field -> field.setAccessible(true)));
                     }
                     log.new Info(("Headers(" + request.headers().size() + "): \n" + request.headers()).trim());
                     return chain.proceed(request);
                 }).build();
 
         assert BASE_URL != null;
+        @SuppressWarnings("deprecation")
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(JacksonConverterFactory.create())
                 .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(SimpleXmlConverterFactory.create())
+                .addConverterFactory(SimpleXmlConverterFactory.create()) //Deprecated
                 .addConverterFactory(MoshiConverterFactory.create())
                 .addConverterFactory(WireConverterFactory.create())
                 .addConverterFactory(ProtoConverterFactory.create())
