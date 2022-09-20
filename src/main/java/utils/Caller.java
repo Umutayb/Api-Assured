@@ -23,7 +23,16 @@ public abstract class Caller {
         objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
     }
 
-    protected static <Model> Model perform(retrofit2.Call<Model> call, Boolean strict, Boolean printBody, String serviceName) {
+    protected static <Model> Model perform(Call<Model> call, Boolean strict, Boolean printBody){
+        String serviceName = getMethod();
+        return perform(call, strict, printBody, serviceName);
+    }
+    protected static <Model> Response<Model> getResponse(Call<Model> call, Boolean strict, Boolean printBody){
+        String serviceName = getMethod();
+        return getResponse(call, strict, printBody, serviceName);
+    }
+
+    protected static <Model> Model perform(Call<Model> call, Boolean strict, Boolean printBody, String serviceName) {
         log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
         try {
             Response<Model> response = call.execute();
@@ -102,5 +111,18 @@ public abstract class Caller {
             else log.new Info("The response body is empty."); // Success response with a null body
         }
         catch (IOException exception){log.new Warning(exception.getStackTrace());}
+    }
+
+    static String getMethod(){
+        Throwable dummyException = new Throwable();
+        StackTraceElement[] stackTrace = dummyException.getStackTrace();
+        // LOGGING-132: use the provided logger name instead of the class name
+        String method = stackTrace[0].getMethodName();
+        // Caller will be the third element
+        if( stackTrace.length > 2 ) {
+            StackTraceElement caller = stackTrace[2];
+            method = caller.getMethodName();
+        }
+        return method;
     }
 }
