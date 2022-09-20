@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 import java.io.IOException;
 
+@SuppressWarnings("unused")
 public abstract class Caller {
 
     static ObjectMapper objectMapper = new ObjectMapper();
@@ -25,13 +26,67 @@ public abstract class Caller {
 
     protected static <Model> Model perform(Call<Model> call, Boolean strict, Boolean printBody){
         String serviceName = getMethod();
-        return perform(call, strict, printBody, serviceName);
+        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
+        try {
+            Response<Model> response = call.execute();
+
+            if (printBody) printBody(response);
+
+            if (response.isSuccessful()){
+                if (response.message().length()>0) log.new Info(response.message());
+                log.new Success("The response code is: " + response.code());
+            }
+            else{
+                if (response.message().length()>0)
+                    log.new Warning(response.message());
+                log.new Warning("The response code is: " + response.code());
+                log.new Warning(response.raw());
+
+                if (strict)
+                    Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
+            }
+            return response.body();
+        }
+        catch (IOException exception) {
+            log.new Error(exception.getLocalizedMessage(),exception);
+            Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
+        }
+        return null;
     }
     protected static <Model> Response<Model> getResponse(Call<Model> call, Boolean strict, Boolean printBody){
         String serviceName = getMethod();
-        return getResponse(call, strict, printBody, serviceName);
+        log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
+        try {
+            Response<Model> response = call.execute();
+
+            if (printBody) printBody(response);
+
+            if (response.isSuccessful()){
+                if (response.message().length()>0)
+                    log.new Info(response.message());
+                log.new Success("The response code is: " + response.code());
+            }
+            else{
+                if (response.message().length()>0)
+                    log.new Warning(response.message());
+                log.new Warning("The response code is: " + response.code());
+                log.new Warning(response.raw());
+
+                if (strict)
+                    Assert.fail("The strict call performed for " + serviceName + " service returned response code " + response.code());
+            }
+            return response;
+        }
+        catch (IOException exception) {
+            if (strict){
+                log.new Error(exception.getLocalizedMessage(), exception);
+                Assert.fail("The call performed for " + serviceName + " failed for an unknown reason.");
+            }
+        }
+        return null;
     }
 
+    @Deprecated
     protected static <Model> Model perform(Call<Model> call, Boolean strict, Boolean printBody, String serviceName) {
         log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
         try {
@@ -61,6 +116,7 @@ public abstract class Caller {
         return null;
     }
 
+    @Deprecated
     protected static <Model> Response<Model> getResponse(Call<Model> call, Boolean strict, Boolean printBody, String serviceName) {
         log.new Info("Performing " + call.request().method() + " call for '" + serviceName + "' service on url: " + call.request().url());
         try {
@@ -94,7 +150,7 @@ public abstract class Caller {
     }
 
     static <Model> void printBody(Response<Model> response) throws IOException {
-        JsonUtilities convert = new JsonUtilities();
+        FileUtilities.Json convert = new FileUtilities.Json();
         String message = "The response body is: \n";
         try {
             if (response.body() != null) // Success response with a non-null body
