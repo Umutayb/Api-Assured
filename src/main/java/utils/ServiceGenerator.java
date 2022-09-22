@@ -24,7 +24,7 @@ public class ServiceGenerator {
 
     Headers headers = new Headers.Builder().build();
 
-    String BASE_URL;
+    String BASE_URL = "";
     private final Printer log = new Printer(ServiceGenerator.class);
 
     public ServiceGenerator(Headers headers, String BASE_URL) {
